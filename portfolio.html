@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bushra Mazhar — Software Developer</title>
+<meta name="description" content="Bushra Mazhar — Software Developer. Frontend & Backend development, C++, C#, HTML/CSS/Bootstrap." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+<style>
+  :root{
+    --ink:#0E1826;
+    --panel:#152238;
+    --panel-2:#1B2C46;
+    --line:#2A3E5C;
+    --line-soft:#20304A;
+    --amber:#F2A93B;
+    --amber-dim:#C88A2E;
+    --cyan:#6FD4C7;
+    --text:#E9EEF7;
+    --text-dim:#93A2BC;
+    --text-faint:#5D6E8C;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--amber); color:var(--ink); }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .display{ font-family:'Space Grotesk', sans-serif; }
+
+  /* blueprint grid background */
+  .grid-bg{
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: -1px -1px;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 5vw;
+    background:rgba(14,24,38,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav-mark{ display:flex; align-items:center; gap:10px; }
+  .nav-mark .dot{ width:8px; height:8px; background:var(--amber); border-radius:1px; }
+  .nav-mark span{ font-size:14px; letter-spacing:0.08em; }
+  .nav-links{ display:flex; gap:32px; }
+  .nav-links a{
+    font-size:13px; letter-spacing:0.06em; color:var(--text-dim);
+    text-transform:uppercase; position:relative; padding-bottom:3px;
+    transition:color .2s ease;
+  }
+  .nav-links a:hover{ color:var(--amber); }
+  .nav-cta{
+    border:1px solid var(--amber-dim); color:var(--amber);
+    padding:8px 16px; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    transition:all .2s ease;
+  }
+  .nav-cta:hover{ background:var(--amber); color:var(--ink); }
+  .burger{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 140px 5vw 80px;
+    position:relative;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .hero-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:26px;
+  }
+  .hero-tag .bar{ width:24px; height:1px; background:var(--cyan); }
+  .hero h1{
+    font-size:clamp(42px, 8vw, 92px);
+    line-height:0.98;
+    margin:0 0 22px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 .accent{ color:var(--amber); }
+  .hero-sub{
+    max-width:620px;
+    font-size:18px; line-height:1.65;
+    color:var(--text-dim);
+    margin-bottom:40px;
+  }
+  .cursor{ display:inline-block; width:10px; height:1.1em; background:var(--amber); vertical-align:text-bottom; animation:blink 1.1s steps(1) infinite; margin-left:4px;}
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero-actions{ display:flex; gap:16px; flex-wrap:wrap; margin-bottom:64px; }
+  .btn-primary{
+    background:var(--amber); color:var(--ink); font-weight:600;
+    padding:14px 28px; font-size:14px; letter-spacing:0.03em;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .btn-primary:hover{ background:#FFC266; transform:translateY(-2px); }
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--text);
+    padding:14px 28px; font-size:14px; letter-spacing:0.03em;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--amber); color:var(--amber); }
+
+  .hero-meta{
+    display:flex; gap:48px; flex-wrap:wrap;
+    padding-top:32px; border-top:1px solid var(--line-soft);
+  }
+  .hero-meta div{ display:flex; flex-direction:column; gap:6px; }
+  .hero-meta .k{ font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-faint); }
+  .hero-meta .v{ font-size:14px; color:var(--text); }
+
+  /* corner brackets */
+  .bracket{ position:relative; }
+  .bracket::before, .bracket::after{
+    content:''; position:absolute; width:14px; height:14px;
+    border-color:var(--amber-dim); opacity:0.7;
+  }
+  .bracket::before{ top:-1px; left:-1px; border-top:1px solid; border-left:1px solid; }
+  .bracket::after{ bottom:-1px; right:-1px; border-bottom:1px solid; border-right:1px solid; }
+
+  /* ---------- SECTION HEADER ---------- */
+  .section{ padding:110px 5vw; border-bottom:1px solid var(--line-soft); }
+  .sec-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:56px; }
+  .sec-num{ font-size:13px; color:var(--amber); }
+  .sec-title{ font-size:clamp(28px,4vw,40px); font-weight:600; }
+  .sec-line{ flex:1; height:1px; background:var(--line); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap:60px; }
+  .about-text p{ font-size:17px; line-height:1.8; color:var(--text-dim); margin-bottom:20px; }
+  .spec-sheet{ border:1px solid var(--line); padding:28px; background:var(--panel); }
+  .spec-row{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line-soft); font-size:14px; }
+  .spec-row:last-child{ border-bottom:none; }
+  .spec-row .k{ color:var(--text-faint); }
+  .spec-row .v{ color:var(--text); text-align:right; }
+
+  /* ---------- SKILLS ---------- */
+  .skill-cat{ margin-bottom:36px; }
+  .skill-cat-label{ font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:16px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    border:1px solid var(--line); padding:9px 16px; font-size:13px;
+    color:var(--text); background:var(--panel);
+    transition:border-color .2s ease, transform .15s ease;
+  }
+  .chip:hover{ border-color:var(--amber); transform:translateY(-2px); }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:28px; }
+  .proj-card{
+    border:1px solid var(--line); background:var(--panel);
+    padding:32px; display:flex; flex-direction:column; gap:16px;
+    transition:border-color .25s ease, transform .25s ease;
+  }
+  .proj-card:hover{ border-color:var(--amber-dim); transform:translateY(-4px); }
+  .proj-index{ font-size:12px; color:var(--text-faint); }
+  .proj-title{ font-size:21px; font-weight:600; }
+  .proj-desc{ font-size:14.5px; line-height:1.7; color:var(--text-dim); flex:1; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .proj-tag{ font-size:11px; color:var(--amber); border:1px solid var(--amber-dim); padding:4px 10px; letter-spacing:0.03em; }
+  .proj-link{ font-size:13px; color:var(--cyan); display:inline-flex; align-items:center; gap:6px; margin-top:6px; }
+  .proj-link:hover{ color:#9be8dd; }
+
+  /* ---------- EXPERIENCE / EDUCATION ---------- */
+  .timeline{ display:flex; flex-direction:column; gap:0; }
+  .t-item{ display:grid; grid-template-columns:140px 24px 1fr; gap:0; padding-bottom:44px; position:relative; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-date{ font-size:13px; color:var(--text-faint); padding-top:2px; }
+  .t-rail{ display:flex; flex-direction:column; align-items:center; }
+  .t-dot{ width:9px; height:9px; background:var(--amber); margin-top:4px; }
+  .t-bar{ flex:1; width:1px; background:var(--line); margin-top:6px; }
+  .t-content{ padding-left:24px; }
+  .t-title{ font-size:18px; font-weight:600; margin-bottom:4px; }
+  .t-org{ font-size:14px; color:var(--cyan); margin-bottom:10px; }
+  .t-desc{ font-size:14px; color:var(--text-dim); line-height:1.7; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ padding:110px 5vw 60px; text-align:center; }
+  .contact h2{ font-size:clamp(32px,6vw,60px); font-weight:700; margin-bottom:20px; }
+  .contact p{ color:var(--text-dim); font-size:16px; margin-bottom:44px; }
+  .contact-links{ display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:80px; }
+  .contact-link{
+    border:1px solid var(--line); padding:16px 28px; font-size:14px;
+    display:flex; align-items:center; gap:10px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .contact-link:hover{ border-color:var(--amber); transform:translateY(-2px); color:var(--amber); }
+  .foot{ font-size:12px; color:var(--text-faint); text-align:center; padding-bottom:32px; }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .about-grid{ grid-template-columns:1fr; }
+    .t-item{ grid-template-columns:90px 18px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useEffect, useState } = React;
+
+function useScrollSpy(ids){
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    ids.forEach(id => { const el = document.getElementById(id); if(el) obs.observe(el); });
+    return () => obs.disconnect();
+  }, [ids]);
+  return active;
+}
+
+const NAV_LINKS = [
+  { id: "about", label: "About" },
+  { id: "skills", label: "Skills" },
+  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
+];
+
+function Nav(){
+  return (
+    <nav className="nav">
+      <div className="nav-mark">
+        <span className="dot"></span>
+        <span className="mono">BUSHRA MAZHAR</span>
+      </div>
+      <div className="nav-links">
+        {NAV_LINKS.map(l => <a key={l.id} href={`#${l.id}`}>{l.label}</a>)}
+      </div>
+      <a className="nav-cta mono" href="#contact">Get in touch</a>
+    </nav>
+  );
+}
+
+function Hero(){
+  return (
+    <header className="hero grid-bg">
+      <div className="hero-tag mono">
+        <span className="bar"></span>
+        AVAILABLE FOR INTERNSHIPS &amp; ENTRY-LEVEL ROLES
+      </div>
+      <h1 className="display">
+        Building structured<br/>
+        systems in <span className="accent">code</span><span className="cursor"></span>
+      </h1>
+      <p className="hero-sub">
+        I'm a Computer Science student and software developer based in Lahore, working across
+        frontend and backend — from responsive interfaces in HTML, CSS &amp; Bootstrap, to
+        application logic in C++ and C#.
+      </p>
+      <div className="hero-actions">
+        <a className="btn-primary" href="#projects">View Projects →</a>
+        <a className="btn-ghost mono" href="#contact">Contact Me</a>
+      </div>
+      <div className="hero-meta">
+        <div><span className="k">Location</span><span className="v">Lahore, Pakistan</span></div>
+        <div><span className="k">Focus</span><span className="v">Frontend &amp; Backend Development</span></div>
+        <div><span className="k">Education</span><span className="v">B.S. Computer Science, UET Lahore</span></div>
+        <div><span className="k">Status</span><span className="v">Open to Work</span></div>
+      </div>
+    </header>
+  );
+}
+
+function SectionHead({ num, title }){
+  return (
+    <div className="sec-head">
+      <span className="sec-num mono">{num}</span>
+      <h2 className="sec-title display">{title}</h2>
+      <div className="sec-line"></div>
+    </div>
+  );
+}
+
+function About(){
+  return (
+    <section id="about" className="section">
+      <SectionHead num="01" title="About" />
+      <div className="about-grid">
+        <div className="about-text">
+          <p>
+            I'm a Computer Science student at the University of Engineering and Technology, Lahore,
+            with hands-on development experience gained through practical training at Arfa Software
+            Technology Park. I work across the stack — building responsive interfaces on the frontend
+            and structured, object-oriented application logic on the backend.
+          </p>
+          <p>
+            My project work spans a real-world e-commerce build (Saphire), a console-based banking
+            system applying core OOP principles in C++ and C#, and small interactive applications
+            including game logic and record-management systems. I'm currently looking for internship
+            and entry-level Software Developer opportunities where I can keep building.
+          </p>
+        </div>
+        <div className="spec-sheet bracket">
+          <div className="spec-row"><span className="k mono">NAME</span><span className="v">Bushra Mazhar</span></div>
+          <div className="spec-row"><span className="k mono">ROLE</span><span className="v">Software Developer</span></div>
+          <div className="spec-row"><span className="k mono">UNIVERSITY</span><span className="v">UET Lahore</span></div>
+          <div className="spec-row"><span className="k mono">LANGUAGES</span><span className="v">C, C++, C#</span></div>
+          <div className="spec-row"><span className="k mono">WEB</span><span className="v">HTML, CSS, Bootstrap</span></div>
+          <div className="spec-row"><span className="k mono">EMAIL</span><span className="v">bushramazhar.430@gmail.com</span></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Skills(){
+  const categories = [
+    { label: "Languages & Core", items: ["HTML", "CSS", "Bootstrap", "C", "C++", "C#", "OOP"] },
+    { label: "Development", items: ["Frontend Development", "Backend Development", "Web Design", "Responsive Design", "Git"] },
+  ];
+  return (
+    <section id="skills" className="section grid-bg">
+      <SectionHead num="02" title="Skills" />
+      {categories.map(cat => (
+        <div className="skill-cat" key={cat.label}>
+          <div className="skill-cat-label mono">{cat.label}</div>
+          <div className="chip-row">
+            {cat.items.map(item => <span className="chip" key={item}>{item}</span>)}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function Projects(){
+  const projects = [
+    {
+      idx: "P.01",
+      title: "Saphire E-commerce Website",
+      desc: "A responsive shopping website blueprint built with HTML, CSS, and Bootstrap — designed end-to-end during hands-on training, with a focus on usability and clean visual structure.",
+      tags: ["HTML", "CSS", "Bootstrap"],
+      link: "https://github.com/bushramazhar430-lang/Saphire-Ecommerce-Website",
+    },
+    {
+      idx: "P.02",
+      title: "Banking Management System",
+      desc: "Console-based banking application built in C++ applying core OOP principles — classes, encapsulation, and inheritance — covering account creation, deposits, withdrawals, and balances. Core logic rebuilt in C#.",
+      tags: ["C++", "C#", "OOP"],
+      link: "https://github.com/bushramazhar430-lang/Banking-Management-System",
+    },
+    {
+      idx: "P.03",
+      title: "Employee Management System",
+      desc: "An application for managing employee records, built with structured, maintainable logic and clean coding practices throughout.",
+      tags: ["C++", "OOP", "Data Handling"],
+      link: "https://github.com/bushramazhar430-lang/EmployeeManagementSystem",
+    },
+  ];
+  return (
+    <section id="projects" className="section">
+      <SectionHead num="03" title="Projects" />
+      <div className="proj-grid">
+        {projects.map(p => (
+          <div className="proj-card bracket" key={p.idx}>
+            <span className="proj-index mono">{p.idx}</span>
+            <div className="proj-title">{p.title}</div>
+            <div className="proj-desc">{p.desc}</div>
+            <div className="proj-tags">
+              {p.tags.map(t => <span className="proj-tag mono" key={t}>{t}</span>)}
+            </div>
+            <a className="proj-link mono" href={p.link} target="_blank" rel="noreferrer">
+              VIEW REPOSITORY →
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Experience(){
+  return (
+    <section id="experience" className="section grid-bg">
+      <SectionHead num="04" title="Experience &amp; Education" />
+      <div className="timeline">
+        <div className="t-item">
+          <span className="t-date mono">JUN 2024 — SEP 2024</span>
+          <div className="t-rail"><span className="t-dot"></span><span className="t-bar"></span></div>
+          <div className="t-content">
+            <div className="t-title">Coder</div>
+            <div className="t-org mono">Arfa Software Technology Park, Lahore</div>
+            <div className="t-desc">
+              Hands-on training in frontend and backend development. Built a technical foundation in
+              HTML/CSS for responsive design alongside C, C++, and C#, backed by core OOP principles.
+              Designed and delivered a shopping website project end-to-end.
+            </div>
+          </div>
+        </div>
+        <div className="t-item">
+          <span className="t-date mono">2025 — PRESENT</span>
+          <div className="t-rail"><span className="t-dot"></span><span className="t-bar"></span></div>
+          <div className="t-content">
+            <div className="t-title">B.S. Computer Science</div>
+            <div className="t-org mono">University of Engineering and Technology, Lahore</div>
+            <div className="t-desc">Bachelors in Computer Science — in progress.</div>
+          </div>
+        </div>
+        <div className="t-item">
+          <span className="t-date mono">2023 — 2025</span>
+          <div className="t-rail"><span className="t-dot"></span></div>
+          <div className="t-content">
+            <div className="t-title">Intermediate in Computer Science</div>
+            <div className="t-org mono">Kips College, Lahore</div>
+            <div className="t-desc">Pre-university foundation in Computer Science.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact(){
+  return (
+    <section id="contact" className="contact">
+      <div className="hero-tag mono" style={{justifyContent:"center"}}>
+        <span className="bar"></span> LET'S BUILD SOMETHING
+      </div>
+      <h2 className="display">Open to internships<br/>&amp; entry-level roles.</h2>
+      <p>Currently based in Lahore, Pakistan — happy to connect remote or on-site.</p>
+      <div className="contact-links">
+        <a className="contact-link mono" href="mailto:bushramazhar.430@gmail.com">✉ EMAIL</a>
+        <a className="contact-link mono" href="https://www.linkedin.com/in/bushra-mazhar-a49ba0405" target="_blank" rel="noreferrer">in LINKEDIN</a>
+        <a className="contact-link mono" href="https://github.com/bushramazhar430-lang" target="_blank" rel="noreferrer">⌥ GITHUB</a>
+      </div>
+      <div className="foot mono">© 2026 BUSHRA MAZHAR — BUILT WITH REACT</div>
+    </section>
+  );
+}
+
+function App(){
+  return (
+    <React.Fragment>
+      <Nav />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Experience />
+      <Contact />
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
